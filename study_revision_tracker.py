@@ -1,15 +1,20 @@
 from datetime import datetime, timedelta 
 def get_date():
     date_input=input("Enter study date(DD-MM-YYYY):")
-    study_date=datetime.strptime
-(date_input,"%d-%m-%Y").date()
-    return study_date
+    try:
+        study_date=datetime.strptime(date_input,"%d-%m-%Y").date()
+        return study_date
+    except ValueError:
+        print("Invalid Date\n")
+        return None
 def revisiondates(study_date):
   next_day=study_date+timedelta (days=1)
   next_week=study_date+timedelta (days=7)
   next_month=study_date+timedelta (days=30)
   return next_day, next_week, next_month
 study_date=get_date()
+if study_date=None:
+    exit()
 revision_1, revision_2, revision_3=revisiondates(study_date)
 course=input ("Enter course:")
 unit=input ("Enter unit:")
