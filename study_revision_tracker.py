@@ -12,6 +12,8 @@ def revisiondates(study_date):
   next_week=study_date+timedelta (days=7)
   next_month=study_date+timedelta (days=30)
   return next_day, next_week, next_month
+def create_record(study_date,course,unit,revision_1,revision_2,revision_3):
+    record={
 study_date=get_date()
 if study_date==None:
     exit()
