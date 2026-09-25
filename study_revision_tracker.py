@@ -13,7 +13,7 @@ def revisiondates(study_date):
   next_month=study_date+timedelta (days=30)
   return next_day, next_week, next_month
 study_date=get_date()
-if study_date=None:
+if study_date==None:
     exit()
 revision_1, revision_2, revision_3=revisiondates(study_date)
 course=input ("Enter course:")
