@@ -1,34 +1,35 @@
+import json 
+
 from datetime import datetime, timedelta 
-def get_date():
-    date_input=input("Enter study date(DD-MM-YYYY):")
-    try:
-        study_date=datetime.strptime(date_input,"%d-%m-%Y").date()
-        return study_date
-    except ValueError:
-        print("Invalid Date\n")
-        return None
+
 def revisiondates(study_date):
   next_day=study_date+timedelta (days=1)
   next_week=study_date+timedelta (days=7)
   next_month=study_date+timedelta (days=30)
   return next_day, next_week, next_month
-def create_record(study_date,course,unit,revision_1,revision_2,revision_3):
-    record={
-study_date=get_date()
-if study_date==None:
-    exit()
-revision_1, revision_2, revision_3=revisiondates(study_date)
-course=input ("Enter course:")
-unit=input ("Enter unit:")
-
-print("\n")
-print("Student Record")
-print("_________________")
-print("Date:",study_date)
-print("Course:", course )
-print("Unit:", unit)
-print("\n")
-print("Revision 1:", revision_1)
-print("Revision 2:", revision_2)
-print("Revision 3:", revision_3)
-
+def create_record():
+    try:
+        study_date=input("Enter study date in DD-MM-YYYY:")
+        study_date=datetime.strptime(study_date,"%d-%m-%Y").date()
+        course=input ("Enter course:")
+        unit =input("Enter unit:")
+        revision_1,revision_2,revision_3=revisiondates(study_date)
+        record={"Study-Date":study_date,"Course":course,"Unit-name":unit,"Revision -1":revision_1,"Revision-2":revision_2,"Revision-3": revision_3}
+        return record 
+    except ValueError:
+        print("Invalid Date")
+        exit()
+    
+records=[]
+try:
+    with open("study_records.json","r")as file:
+        records=json.load(file)
+except FileNotFoundError:
+    records=[]
+n=1
+while(n>0):
+    records.append(create_record())
+    n=n-1
+with open("study_records.json","w") as file:
+    json.dump(records,file,indent=4, default=str)
+print (records)
