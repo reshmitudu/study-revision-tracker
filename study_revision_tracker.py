@@ -21,7 +21,7 @@ def create_record():
 def checkRevision(records):
      due_today=[]
      today=date.today() 
-     
+
      for record in records:
          rev_1=date.fromisoformat(record["Revision-1"])
          rev_2=date.fromisoformat(record["Revision-2"])
@@ -35,18 +35,38 @@ def checkRevision(records):
      print("Revisions Due Today")
      for item in due_today:
          print(item)
-     print("\nNo of revisions due today:",len(due_today))	
-records=[]
-try:
-     with open("study_records.json","r")as file:
-         records=json.load(file)
-except FileNotFoundError:
-         records=[]
-checkRevision(records)
-n=1
-while(n>0):
-     records.append(create_record())
-     n=n-1
-with open("study_records.json","w") as file:
-     json.dump(records,file,indent=4, default=str)
+     print("\nNo of revisions due today:",len(due_today))        
+def menu():
+     print("\n=====STUDY REVISION TRACKER=====")
+     print("\n1. Add new study record")
+     print("\n2. Check revisions due today")
+     print("\n3. Exit")
 
+     choice=int(input("\nEnter your choice:"))
+
+     return choice
+
+choice=menu()
+print ("You selected:",choice)
+match choice:
+     case 1:
+         try:
+             with open("study_records.json","r")as file:
+                 records=json.load(file)
+         except FileNotFoundError:
+             records=[]
+         checkRevision(records)
+     case 2:
+         
+         n=1
+         while(n>0):
+             records.append(create_record())
+             n=n-1
+         with open("study_records.json","w") as file:
+             json.dump(records,file,indent=4, default=str)
+     case 3:
+         print("Program exits with code 0")
+         exit(0)
+     case _:
+         print ("You entered wrong choice ")
+         
