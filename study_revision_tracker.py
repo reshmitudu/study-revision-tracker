@@ -41,32 +41,31 @@ def menu():
      print("\n1. Add new study record")
      print("\n2. Check revisions due today")
      print("\n3. Exit")
-
      choice=int(input("\nEnter your choice:"))
 
      return choice
+records=[] 
+while(c=='Y'|| c=='y'):
+     choice=menu()
+     print ("You selected:",choice)
+     match choice:
+         case 1:
+             try:
+                 with open("study_records.json","r")as file:
+                     records=json.load(file)
+             except FileNotFoundError:
+                     records=[]
+             checkRevision(records)
+         case 2:
 
-choice=menu()
-print ("You selected:",choice)
-match choice:
-     case 1:
-         try:
-             with open("study_records.json","r")as file:
-                 records=json.load(file)
-         except FileNotFoundError:
-             records=[]
-         checkRevision(records)
-     case 2:
-         
-         n=1
-         while(n>0):
-             records.append(create_record())
-             n=n-1
-         with open("study_records.json","w") as file:
-             json.dump(records,file,indent=4, default=str)
-     case 3:
-         print("Program exits with code 0")
-         exit(0)
-     case _:
-         print ("You entered wrong choice ")
-         
+             n=1
+             while(n>0):
+                 records.append(create_record())
+                 n=n-1
+                 with open("study_records.json","w") as file:
+                     json.dump(records,file,indent=4, default=str)
+         case 3:
+             print("Program exits with code 0")
+             exit(0)
+         case _:
+             print ("You entered wrong choice ")
