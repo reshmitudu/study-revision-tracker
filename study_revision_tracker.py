@@ -10,14 +10,20 @@ def create_record():
      try:
          study_date=input("Enter study date in DD-MM-YYYY:")
          study_date=datetime.strptime(study_date,"%d-%m-%Y").date()
-         course=input ("Enter course:")
-         unit =input("Enter unit:")
+         course=input ("Enter course:").strip()
+         if not course:
+             print("Course name cannot be empty")
+             return None
+         unit =input("Enter unit:").strip()
+         if not unit:
+             print("Unit name cannot be empty")
+             return None
          revision_1,revision_2,revision_3=revisiondates(study_date)
          record={"Study-Date":study_date,"Course":course,"Unit-name":unit,"Revision-1":revision_1,"Revision-2":revision_2,"Revision-3":revision_3}
          return record 
      except ValueError:
-         print("Invalid Date")
-         exit()
+         print("Invalid Date.Try again")
+         create_record()
 def checkRevision(records):
      due_today=[]
      today=date.today() 
@@ -38,18 +44,20 @@ def checkRevision(records):
      print("\nNo of revisions due today:",len(due_today))        
 def menu():
      print("\n=====STUDY REVISION TRACKER=====")
-     print("\n1. Add new study record")
-     print("\n2. Check revisions due today")
+     print("\n1. Check revisions due today")
+     print("\n2. Add new study record")
      print("\n3. Exit")
      choice=int(input("\nEnter your choice:"))
 
      return choice
 records=[] 
-while(c=='Y'|| c=='y'):
+c='Y'
+while(c=='Y'):
      choice=menu()
      print ("You selected:",choice)
      match choice:
          case 1:
+             
              try:
                  with open("study_records.json","r")as file:
                      records=json.load(file)
@@ -58,14 +66,24 @@ while(c=='Y'|| c=='y'):
              checkRevision(records)
          case 2:
 
-             n=1
-             while(n>0):
-                 records.append(create_record())
-                 n=n-1
-                 with open("study_records.json","w") as file:
-                     json.dump(records,file,indent=4, default=str)
+             n=int(input("Enter number of records:"))
+             for i in range(1,n+1):
+                 new_record=create_record()
+                 if new_record is not None:
+                     records.append(new_record)
+                     print("Record created successfully")
+                     with open("study_records.json","w") as file:
+                         json.dump(records,file,indent=4, default=str)
+                 else:
+                     print("Record is empty")
          case 3:
-             print("Program exits with code 0")
+             
+             print("Exits...")
              exit(0)
          case _:
+             
              print ("You entered wrong choice ")
+             
+     print("Do you want to continue?")
+     c=input("Enter Y for yes OR Enter N for No:")
+    
