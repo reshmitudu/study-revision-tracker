@@ -47,9 +47,23 @@ def menu():
      print("\n1. Check revisions due today")
      print("\n2. Add new study record")
      print("\n3. Exit")
-     choice=int(input("\nEnter your choice:"))
-
-     return choice
+     try:
+         choice=int(input("\nEnter your choice:"))
+         return choice 
+     except ValueError:
+         print("Entered wrong choice: Please enter a valid number, not text like")
+         return None
+def get_count():
+    while True:
+        try:
+            n=int(input("Enter number of records:"))
+            if(n<=0):
+                print("Please enter positive integer")
+                continue 
+            else:
+                return n
+        except ValueError:
+            print("Please enter valid integer")
 records=[]
 try:
      with open("study_records.json","r")as file:
@@ -59,35 +73,31 @@ except FileNotFoundError:
 c='Y'
 while(c=='Y'):
      choice=menu()
+     if(choice==None):
+         continue 
      print ("You selected:",choice)
      match choice:
-         case 1:
-
-             try:
-                 with open("study_records.json","r")as file:
-                     records=json.load(file)
-             except FileNotFoundError:
-                     records=[]
-             checkRevision(records)
-         case 2:
-
-             n=int(input("Enter number of records:"))
-             for i in range(1,n+1):
-                 new_record=create_record()
-                 if new_record is not None:
-                     records.append(new_record)
-                     print("Record created successfully")
-                     with open("study_records.json","w") as file:
-                         json.dump(records,file,indent=4, default=str)
-                 else:
-                     print("Record is empty")
-         case 3:
-
-             print("Exits...")
-             exit(0)
-         case _:
-
-             print ("You entered wrong choice ")
-
-     print("Do you want to continue?")
-     c=input("Enter Y for yes OR Enter N for No:")
+        case 1:
+            try:
+                with open("study_records.json","r")as file:
+                    records=json.load(file)
+            except FileNotFoundError:
+                records=[]
+            checkRevision(records)
+        case 2:
+            record_count=get_count()
+            for i in range(1,record_count+1):
+                new_record=create_record()
+                if new_record is not None:
+                    records.append(new_record)
+                    print("Record created successfully")
+                    with open("study_records.json","w") as file:
+                        json.dump(records,file,indent=4, default=str)
+                else:
+                    print("Record is empty")
+        case 3:
+            print("Exits...")
+            exit(0)
+        case _:
+            print ("Invalid choice. Enter only 1, 2 or 3")
+     c=input("Do you want to continue? \nEnter Y for yes OR Enter N for No:")
