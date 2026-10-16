@@ -50,14 +50,19 @@ def menu():
      choice=int(input("\nEnter your choice:"))
 
      return choice
-records=[] 
+records=[]
+try:
+     with open("study_records.json","r")as file:
+         records=json.load(file)
+except FileNotFoundError:
+     records=[]
 c='Y'
 while(c=='Y'):
      choice=menu()
      print ("You selected:",choice)
      match choice:
          case 1:
-             
+
              try:
                  with open("study_records.json","r")as file:
                      records=json.load(file)
@@ -77,13 +82,12 @@ while(c=='Y'):
                  else:
                      print("Record is empty")
          case 3:
-             
+
              print("Exits...")
              exit(0)
          case _:
-             
+
              print ("You entered wrong choice ")
-             
+
      print("Do you want to continue?")
      c=input("Enter Y for yes OR Enter N for No:")
-    
